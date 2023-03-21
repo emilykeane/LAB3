@@ -368,7 +368,7 @@ public void testConstrainValueWithinRange() {
 public void testConstrainValueWithinRangeNegativeValue() { 
 	rangeObjectUnderTest = new Range(-8, -5);
     assertEquals("The value returned should be: 0.0",
-   		6, rangeObjectUnderTest.constrain(-6), 0.000000001d);
+   		-6, rangeObjectUnderTest.constrain(-6), 0.000000001d);
 }
 
 //Test case below fails but should pass 
@@ -378,6 +378,12 @@ public void testConstrainValueBelowRange() {
     assertEquals(-5.0, rangeObjectUnderTest.constrain(-10.0), 0.0001);
 }
 
+//Test case below fails but should pass 
+@Test 
+public void testConstrainValueOutsideBelowRange() { 
+  rangeObjectUnderTest = new Range(5, 10);
+  assertEquals(5, rangeObjectUnderTest.constrain(2), 0.0001);
+}
 @Test 
 public void testConstrainValueAboveRange() { 
     rangeObjectUnderTest = new Range(-2, 5);
@@ -413,6 +419,54 @@ public void testConstrainValueWithinRangeEquidistantFromBothBounds() {
     rangeObjectUnderTest = new Range(0, 5);
     assertEquals(2.5, rangeObjectUnderTest.constrain(2.5), 0.0001);
 }
+
+@Test
+public void testCombineRange1IsNull() {
+    Range range2 = new Range(0, 10);
+    Range expected = new Range(0, 10);
+    assertEquals(expected, Range.combine(null, range2));
+}
+
+@Test
+public void testCombineRangesDoNotOverlap() {
+    Range range1 = new Range(0, 10);
+    Range range2 = new Range(20, 30);
+    Range expected = new Range(0, 30);
+    assertEquals(expected, Range.combine(range1, range2));
+}
+
+@Test
+public void testCombineRangesPartiallyOverlap() {
+    Range range1 = new Range(0, 10);
+    Range range2 = new Range(5, 15);
+    Range result = Range.combine(range1, range2);
+    Range expected = new Range(0, 15);
+    assertEquals(expected, result);
+}
+
+@Test
+public void testCombineRangesAreTheSame() {
+    Range range1 = new Range(0, 10);
+    Range range2 = new Range(0, 10);
+    Range result = Range.combine(range1, range2);
+    Range expected = new Range(0, 10);
+    assertEquals(expected, result);
+}
+
+@Test
+public void testCombineBothRangesAreNull() {
+    Range result = Range.combine(null, null);
+    assertNull(null, result);
+}
+
+@Test
+public void testCombineRange2IsNull() {
+    Range range1 = new Range(0, 10);
+    Range result = Range.combine(range1, null);
+    Range expected = new Range(0, 10);
+    assertEquals(expected, result);
+}
+
 
  @Test 
  public void testCentralValueShouldBeZero() { 
