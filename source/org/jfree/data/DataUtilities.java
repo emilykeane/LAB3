@@ -73,7 +73,7 @@ public abstract class DataUtilities {
         }
         return total;
     }
-    
+     
     /**
      * Returns the sum of the values in one row of the supplied data
      * table. With invalid input, a total of zero will be returned.
