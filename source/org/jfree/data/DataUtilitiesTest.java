@@ -285,6 +285,13 @@ public class DataUtilitiesTest {
 		Number[] test = DataUtilities.createNumberArray(input);
 		assertArrayEquals(expectedOutput,test );
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateNumberArrayWithNullData() {
+	    double[] data = null;
+	    Number[] result = DataUtilities.createNumberArray(data);
+	}
+
 
 //Test Cases for 2dcreateNumberArray
 	@Test
@@ -295,6 +302,12 @@ public class DataUtilitiesTest {
 		Number[][] expectedValidResult1 = { { 1.0, 2.0, 3.0 }, { 4.0, 5.0, 6.0 } };
 		assertArrayEquals(expectedValidResult1, test);
 
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testCreateNumberArrayWithNullData2() {
+	    double[][] data = null;
+	    Number[][] result = DataUtilities.createNumberArray2D(data);
 	}
 
 	@Test
@@ -394,7 +407,11 @@ public class DataUtilitiesTest {
 		  
 		  }
 	  
-	  
+	  @Test(expected = IllegalArgumentException.class)
+	  public void testGetCumulativePercentagesWithNullData() {
+	      KeyedValues data = null;
+	      KeyedValues result = DataUtilities.getCumulativePercentages(data);
+	  }
 	  
 	  @Test public void testInvalidInputNullForCumaltivePercentages() { // Test case with valid input
 		  DefaultKeyedValues testValues = new DefaultKeyedValues(); 
@@ -412,6 +429,10 @@ public class DataUtilitiesTest {
 		  
 		  
 		  }
+		  
+		  
+		  
+	  
 	  
 	 
 	 

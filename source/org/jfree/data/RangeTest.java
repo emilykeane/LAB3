@@ -48,6 +48,17 @@ public class RangeTest {
 	   
  }
  
+ @Test
+ public void testShiftPositiveDeltaWithAllowZeroCrossingTrue2() {
+	 rangeObjectUnderTest = new Range(-10, 0);
+	 Range test2 = new Range(-20, 0);
+	 rangeObjectUnderTest = Range.shift(rangeObjectUnderTest, -10,false);
+	 assertEquals("The new shifted range should be as expected", 
+			 test2, rangeObjectUnderTest);
+	 
+	   
+ }
+ 
  
 //Moves all values to left by -5 in rangeObjectUnderTest and 
 // allows zero crossing
@@ -77,6 +88,8 @@ public class RangeTest {
 	 
 	   
  }
+ 
+ 
  
 //Moves all values to right by 5 in rangeObjectUnderTest and 
 //doesn't allow zero crossing
@@ -138,6 +151,42 @@ public class RangeTest {
 }
  
  @Test 
+ public void test2IntersectsInputLowerAndUpperBoundWhenGreaterThanRangeUpperBound() {
+	 rangeObjectUnderTest = new Range(0, 10);
+  assertTrue( rangeObjectUnderTest.intersects(10,15)); 
+ 
+}
+
+ @Test
+ public void testRangeOverlapUpperGreaterThanUpperAndLower() {
+     Range r1 = new Range(0, 10);
+     Range r2 = new Range(11, 20);
+     assertFalse(r1.intersects(11, 20));
+ }
+
+ @Test
+ public void testRangeOverlapUpperEqualUpperAndLower() {
+     Range r1 = new Range(0, 10);
+     Range r2 = new Range(10, 20);
+     assertTrue(r1.intersects(10, 20));
+ }
+
+ @Test
+ public void testRangeOverlapUpperGreaterThanLowerAndLowerLessThanUpper() {
+     Range r1 = new Range(0, 10);
+     Range r2 = new Range(5, 15);
+     assertTrue(r1.intersects(5, 15));
+ }
+
+ @Test
+ public void testRangeOverlapUpperLessThanLower() {
+     Range r1 = new Range(0, 10);
+     Range r2 = new Range(15, 20);
+     assertFalse(r1.intersects(15, 20));
+ }
+
+ 
+ @Test 
  public void testIntersectsInputValuesAreSubsetOfRange() { 
 	 rangeObjectUnderTest = new Range(6, 12);
   assertTrue(rangeObjectUnderTest.intersects(10,11)); 
@@ -175,6 +224,20 @@ public class RangeTest {
  public void testIntersectInputIsSubsetOfRangeWithNegativeDecimalPoint() { 
 	 rangeObjectUnderTest = new Range(-2.50,-1.5);
      assertTrue(rangeObjectUnderTest.intersects(-1.75,-0.5)); 
+ 
+}
+ 
+ @Test
+ public void testIntersectInputIsSubsetOfRangeWithNegativeDecimalPoint2() { 
+	 rangeObjectUnderTest = new Range(2.50,15);
+     assertTrue(rangeObjectUnderTest.intersects(-1.75,15)); 
+ 
+}
+
+ @Test
+ public void testIntersectInputIsSubsetOfRangeWithNegativeDecimalPoint3() { 
+	 rangeObjectUnderTest = new Range(-1.85,15);
+     assertTrue(rangeObjectUnderTest.intersects(-1.75, -1.75)); 
  
 }
   
