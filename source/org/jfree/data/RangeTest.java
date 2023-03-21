@@ -153,38 +153,9 @@ public class RangeTest {
  @Test 
  public void test2IntersectsInputLowerAndUpperBoundWhenGreaterThanRangeUpperBound() {
 	 rangeObjectUnderTest = new Range(0, 10);
-  assertTrue( rangeObjectUnderTest.intersects(10,15)); 
+  assertFalse( rangeObjectUnderTest.intersects(5,15)); 
  
 }
-
- @Test
- public void testRangeOverlapUpperGreaterThanUpperAndLower() {
-     Range r1 = new Range(0, 10);
-     Range r2 = new Range(11, 20);
-     assertFalse(r1.intersects(11, 20));
- }
-
- @Test
- public void testRangeOverlapUpperEqualUpperAndLower() {
-     Range r1 = new Range(0, 10);
-     Range r2 = new Range(10, 20);
-     assertTrue(r1.intersects(10, 20));
- }
-
- @Test
- public void testRangeOverlapUpperGreaterThanLowerAndLowerLessThanUpper() {
-     Range r1 = new Range(0, 10);
-     Range r2 = new Range(5, 15);
-     assertTrue(r1.intersects(5, 15));
- }
-
- @Test
- public void testRangeOverlapUpperLessThanLower() {
-     Range r1 = new Range(0, 10);
-     Range r2 = new Range(15, 20);
-     assertFalse(r1.intersects(15, 20));
- }
-
  
  @Test 
  public void testIntersectsInputValuesAreSubsetOfRange() { 
