@@ -5,6 +5,7 @@ import junit.framework.TestCase;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -473,6 +474,86 @@ public void testCombineRange2IsNull() {
 	 rangeObjectUnderTest =new Range(-1,1);
   assertEquals("The central value of -1 and 1 should be 0", 
      0, rangeObjectUnderTest.getCentralValue(), 0.000000001d); 
- } 
-} 
+ }
+ 
+ 
+
+     @Test(expected = IllegalArgumentException.class)
+     public void testExpandWithNullRange() {
+         Range range = null;
+         Range.expand(range, 0.1, 0.2);
+     }
+
+     @Test
+     public void testExpandWithZeroMargins() {
+         Range range = new Range(0.0, 1.0);
+         Range expandedRange = Range.expand(range, 0.0, 0.0);
+         assertEquals(0.0, expandedRange.getLowerBound(), 0.0001);
+         assertEquals(1.0, expandedRange.getUpperBound(), 0.0001);
+     }
+
+     @Test
+     public void testExpandWithPositiveMargins() {
+         Range range = new Range(0.0, 1.0);
+         Range expandedRange = Range.expand(range, 0.1, 0.2);
+         assertEquals(-0.1, expandedRange.getLowerBound(), 0.0001);
+         assertEquals(1.2, expandedRange.getUpperBound(), 0.0001);
+     }
+
+     @Test
+     public void testExpandWithNegativeMargins() {
+         Range range = new Range(0.0, 1.0);
+         Range expandedRange = Range.expand(range, -0.1, -0.2);
+         assertEquals(0.1, expandedRange.getLowerBound(), 0.0001);
+         assertEquals(0.8, expandedRange.getUpperBound(), 0.0001);
+     }
+     
+    
+
+         @Test
+         public void testExpandToIncludeWithNullRange() {
+             Range range = null;
+             Range expandedRange = Range.expandToInclude(range, 1.0);
+             assertEquals(1.0, expandedRange.getLowerBound(), 0.0001);
+             assertEquals(1.0, expandedRange.getUpperBound(), 0.0001);
+         }
+
+         @Test
+         public void testExpandToIncludeWithValueBelowRange() {
+             Range range = new Range(0.0, 1.0);
+             Range expandedRange = Range.expandToInclude(range, -1.0);
+             assertEquals(-1.0, expandedRange.getLowerBound(), 0.0001);
+             assertEquals(1.0, expandedRange.getUpperBound(), 0.0001);
+         }
+
+         @Test
+         public void testExpandToIncludeWithValueAboveRange() {
+             Range range = new Range(0.0, 1.0);
+             Range expandedRange = Range.expandToInclude(range, 2.0);
+             assertEquals(0.0, expandedRange.getLowerBound(), 0.0001);
+             assertEquals(2.0, expandedRange.getUpperBound(), 0.0001);
+         }
+
+         @Test
+         public void testExpandToIncludeWithValueInRange() {
+             Range range = new Range(0.0, 1.0);
+             Range expandedRange = Range.expandToInclude(range, 0.5);
+             assertEquals(0.0, expandedRange.getLowerBound(), 0.0001);
+             assertEquals(1.0, expandedRange.getUpperBound(), 0.0001);
+             assertSame(range, expandedRange);
+         }
+         @Test
+         public void testConstructor() {
+             // Test lower > upper
+             try {
+                 Range range = new Range(1.0, 0.0);
+                 fail("Expected IllegalArgumentException");
+             } catch (IllegalArgumentException e) {
+                 assertEquals("Range(double, double): require lower (1.0) <= upper (0.0).", e.getMessage());
+             }}
+     }
+
+ 
+
+
 
