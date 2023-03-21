@@ -1,5 +1,7 @@
 package org.jfree.data;
 
+
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -45,203 +47,273 @@ public class DataUtilitiesTest {
 	}
 
 	// Test case failed due to invalid column index- should return 0 for invalid
-	// input
+	 // input
+	 @Test
+	 public void testValidDataAndInValidNegativeColumnIndex() {
+	 try {
+	 assertEquals("Sum returned should be 0", 0, DataUtilities.calculateColumnTotal(values2D, -1), 0.0000001d);
+	 } catch (IndexOutOfBoundsException e) {
+	 fail("An unexpected IndexOutOfBoundsException was thrown");
+	 }
+	 }
+	
+	//TC failed - method does not return an exception
+	 @Test
+	 public void testNullDataandColumnIndex() {
+	 try {
+	 DataUtilities.calculateColumnTotal(null, 1);
+	 fail("No exception thrown. The expected outcome was: a thrown "
+	 + "exception of type: IllegalArgumentException");
+	 } catch (Exception e) {
+	 assertTrue("Incorrect exception type thrown", e.getClass().equals(NullPointerException.class));
+	 }
+	 }
+	 
+	//TC failed - method does not return an exception
+	 @Test
+	 public void testNullDataandNegativeColumnIndex() {
+	 try {
+	 DataUtilities.calculateColumnTotal(null, -3);
+	 fail("No exception thrown. The expected outcome was: a thrown "
+	 + "exception of type: IllegalArgumentException");
+	 } catch (Exception e) {
+	 assertTrue("Incorrect exception type thrown", e.getClass().equals(NullPointerException.class));
+	 }
+	 }
+	 
+	//TC failed - method does not return an exception
+	 @Test
+	 public void testNullDataandZeroColumnIndex() {
+	 try {
+	 DataUtilities.calculateColumnTotal(null,0);
+	 fail("No exception thrown. The expected outcome was: a thrown "
+	 + "exception of type: IllegalArgumentException");
+	 } catch (Exception e) {
+	 assertTrue("Incorrect exception type thrown", e.getClass().equals(NullPointerException.class));
+	 }
+	 }
+	
+	 @Test
+	 public void testValidDataAndZeroColumnIndex() {
+	 assertEquals("Sum returned should be 7.0", 7, DataUtilities.calculateColumnTotal(values2D, 0), 0.0000001d);
+	 }
+	 
+	 @Test
+	 public void testNullDataAndColumnIndex() {
+		 // set up
+		 DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
+		 values2D = testValues;
+		 testValues.addValue(null, 0, 0);
+		 try {
+			 DataUtilities.calculateColumnTotal(values2D,0);
+			 fail("No exception thrown. The expected outcome was: a thrown "
+			 + "exception of type: IllegalArgumentException");
+			 } catch (Exception e) {
+			 assertTrue("Incorrect exception type thrown", e.getClass().equals(NullPointerException.class));
+			}
+		 }
+	 
+	 @Test
+	 public void testValidDataAndValidPositiveColumnIndex() {
+	 assertEquals("Sum returned should be 8.0", 8, DataUtilities.calculateColumnTotal(values2D, 1), 0.0000001d);
+	 }
+	 
 	@Test
-	public void testValidDataAndInValidNegativeColumnIndex() {
-		try {
-			assertEquals("Sum returned should be 0", 0, DataUtilities.calculateColumnTotal(values2D, -1), 0.0000001d);
-		} catch (IndexOutOfBoundsException e) {
-			fail("An unexpected IndexOutOfBoundsException was thrown");
-		}
+	 public void testValidDataAndValidPositiveColumnIndexWithNullValues() {
+	 // set up
+	 DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
+	 values2D = testValues;
+	 testValues.addValue(1, 0, 0);
+	 testValues.addValue(null, 1, 0);
+	 testValues.addValue(3, 2, 0);
+	 testValues.addValue(2, 0, 1);
+	 testValues.addValue(null, 1, 1);
+	 testValues.addValue(4, 2, 1);
+	 testValues.addValue(3, 0, 2);
+	 testValues.addValue(3, 1, 2);
+	 
+	assertEquals("Sum returned should be 4", 4, DataUtilities.calculateColumnTotal(values2D, 0), 0.0000001d);
+	 
 	}
+	 @Test
+	 public void test0x0DataAndPositiveColumnIndex() {
+	 // set up
+	 DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
+	 values2D = testValues;
+	 testValues.addValue(0, 0, 0);
+	 testValues.addValue(0, 1, 0);
+	 testValues.addValue(0, 2, 0);
+	 testValues.addValue(0, 0, 1);
+	 testValues.addValue(0, 1, 1);
+	 testValues.addValue(0, 2, 1);
+	 testValues.addValue(0, 0, 2);
+	 testValues.addValue(0, 1, 2);
+	 testValues.addValue(0, 2, 2);
+	 assertEquals("Sum returned should be 0.0", 0, DataUtilities.calculateColumnTotal(values2D, 1), 0.0000001d);
+	 }
+	 
+	//Test case failed due to invalid column index -1 should return 0 for invalid input
+	 @Test
+	 public void test0x0DataAndNegativeColumnIndex() {
+	 // set up
+	 DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
+	 values2D = testValues;
+	 testValues.addValue(0, 0, 0);
+	 testValues.addValue(0, 1, 0);
+	 testValues.addValue(0, 2, 0);
+	 testValues.addValue(0, 0, 1);
+	 testValues.addValue(0, 1, 1);
+	 testValues.addValue(0, 2, 1);
+	 testValues.addValue(0, 0, 2);
+	 testValues.addValue(0, 1, 2);
+	 testValues.addValue(0, 2, 2);
+	 try {
+	 assertEquals("Sum returned should be 0.0", 0.0, DataUtilities.calculateColumnTotal(values2D, -1),
+	 0.0000001d);
+	 } catch (IndexOutOfBoundsException e) {
+	 fail("An unexpected IndexOutOfBoundsException was thrown");
+	 }
+	 }
+	//Test case passed
+	 @Test
+	 public void test0x0DataAndZeroColumnIndex() {
+	 // set up
+	 DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
+	 values2D = testValues;
+	 testValues.addValue(0, 0, 0);
+	 testValues.addValue(0, 1, 0);
+	 testValues.addValue(0, 2, 0);
+	 testValues.addValue(0, 0, 1);
+	 testValues.addValue(0, 1, 1);
+	 testValues.addValue(0, 2, 1);
+	 testValues.addValue(0, 0, 2);
+	 testValues.addValue(0, 1, 2);
+	 testValues.addValue(0, 2, 2);
+	 try {
+	 assertEquals("Sum returned should be 0.0", 0.0, DataUtilities.calculateColumnTotal(values2D, 0),
+	 0.0000001d);
+	 } catch (IndexOutOfBoundsException e) {
+	 fail("An unexpected IndexOutOfBoundsException was thrown");
+	 }
+	 }
 
-//TC failed - method does not return an exception
-	@Test
-	public void testNullDataandColumnIndex() {
-		try {
-			DataUtilities.calculateColumnTotal(null, 1);
-			fail("No exception thrown. The expected outcome was: a thrown "
-					+ "exception of type: IllegalArgumentException");
-		} catch (Exception e) {
-			assertTrue("Incorrect exception type thrown", e.getClass().equals(NullPointerException.class));
-		}
-	}
-
-	@Test
-	public void testValidDataAndZeroColumnIndex() {
-		assertEquals("Sum returned should be 7.0", 7, DataUtilities.calculateColumnTotal(values2D, 0), 0.0000001d);
-	}
-
-	@Test
-	public void testValidDataAndValidPositiveColumnIndex() {
-		assertEquals("Sum returned should be 8.0", 8, DataUtilities.calculateColumnTotal(values2D, 1), 0.0000001d);
-	}
-
-	@Test
-	public void test0x0DataAndPositiveColumnIndex() {
-		// set up
-		DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
-		values2D = testValues;
-		testValues.addValue(0, 0, 0);
-		testValues.addValue(0, 1, 0);
-		testValues.addValue(0, 2, 0);
-		testValues.addValue(0, 0, 1);
-		testValues.addValue(0, 1, 1);
-		testValues.addValue(0, 2, 1);
-		testValues.addValue(0, 0, 2);
-		testValues.addValue(0, 1, 2);
-		testValues.addValue(0, 2, 2);
-		assertEquals("Sum returned should be 0.0", 0, DataUtilities.calculateColumnTotal(values2D, 1), 0.0000001d);
-	}
-
-//Test case failed due to invalid column index -1 should return 0 for invalid input
-	@Test
-	public void test0x0DataAndNegativeColumnIndex() {
-		// set up
-		DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
-		values2D = testValues;
-		testValues.addValue(0, 0, 0);
-		testValues.addValue(0, 1, 0);
-		testValues.addValue(0, 2, 0);
-		testValues.addValue(0, 0, 1);
-		testValues.addValue(0, 1, 1);
-		testValues.addValue(0, 2, 1);
-		testValues.addValue(0, 0, 2);
-		testValues.addValue(0, 1, 2);
-		testValues.addValue(0, 2, 2);
-		try {
-			assertEquals("Sum returned should be 0.0", 0.0, DataUtilities.calculateColumnTotal(values2D, -1),
-					0.0000001d);
-		} catch (IndexOutOfBoundsException e) {
-			fail("An unexpected IndexOutOfBoundsException was thrown");
-		}
-
-	}
-
-//Test case passed
-	@Test
-	public void test0x0DataAndZeroColumnIndex() {
-		// set up
-		DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
-		values2D = testValues;
-		testValues.addValue(0, 0, 0);
-		testValues.addValue(0, 1, 0);
-		testValues.addValue(0, 2, 0);
-		testValues.addValue(0, 0, 1);
-		testValues.addValue(0, 1, 1);
-		testValues.addValue(0, 2, 1);
-		testValues.addValue(0, 0, 2);
-		testValues.addValue(0, 1, 2);
-		testValues.addValue(0, 2, 2);
-		try {
-			assertEquals("Sum returned should be 0.0", 0.0, DataUtilities.calculateColumnTotal(values2D, 0),
-					0.0000001d);
-		} catch (IndexOutOfBoundsException e) {
-			fail("An unexpected IndexOutOfBoundsException was thrown");
-		}
-
-	}
+	 
 	// rows now
-
-//Test case failed due to invalid column index- should return 0 for invalid input
-	@Test
-	public void testValidDataAndInValidNegativeRowIndex() {
-		try {
-			assertEquals("Sum returned should be 0", 0, DataUtilities.calculateRowTotal(values2D, -1), 0.0000001d);
-		} catch (IndexOutOfBoundsException e) {
-			
-		}
+	//Test case failed due to invalid column index- should return 0 for invalid input
+	 @Test
+	 public void testValidDataAndInValidNegativeRowIndex() {
+	 try {
+	 assertEquals("Sum returned should be 0", 0, DataUtilities.calculateRowTotal(values2D, -1), 0.0000001d);
+	 } catch (IndexOutOfBoundsException e) {
+	 
 	}
-
-	// TC failed - method does not return an exception
+	 }
+	 
+	 
+	 // TC failed - method does not return an exception
+	 @Test
+	 public void testNullDataandRowIndex() {
+	 try {
+	 DataUtilities.calculateColumnTotal(null, 1);
+	 fail("No exception thrown. The expected outcome was: a thrown "
+	 + "exception of type: IllegalArgumentException");
+	 } catch (Exception e) {
+	 assertTrue("Incorrect exception type thrown", e.getClass().equals(NullPointerException.class));
+	 }
+	 }
+	 
+	 
+	//Test case passed
 	@Test
-	public void testNullDataandRowIndex() {
-		try {
-			DataUtilities.calculateColumnTotal(null, 1);
-			fail("No exception thrown. The expected outcome was: a thrown "
-					+ "exception of type: IllegalArgumentException");
-		} catch (Exception e) {
-			assertTrue("Incorrect exception type thrown", e.getClass().equals(NullPointerException.class));
-		}
-	}
+	 public void testValidDataAndZeroRowIndex() {
+	 assertEquals("Sum returned should be 6", 6, DataUtilities.calculateRowTotal(values2D, 0), 0.0000001d);
+	 }
+	
+	//Test case passed
+	 @Test
+	 public void testValidDataAndValidPositiveRowIndex() {
+	 assertEquals("Sum returned should be 8", 8, DataUtilities.calculateRowTotal(values2D, 1), 0.0000001d);
+	 }
+	 
+	 @Test
+	 public void testNullDataAndRowIndex() {
+		 // set up
+		 DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
+		 values2D = testValues;
+		 testValues.addValue(null, 0, 0);
+		 try {
+			 DataUtilities.calculateRowTotal(values2D,0);
+			 fail("No exception thrown. The expected outcome was: a thrown "
+			 + "exception of type: IllegalArgumentException");
+			 } catch (Exception e) {
+			 assertTrue("Incorrect exception type thrown", e.getClass().equals(NullPointerException.class));
+			}
+		 }
+	 
+	 
+	 @Test
+	 public void test0x0DataAndPositiveRowIndex() {
+	 // set up
+	 DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
+	 values2D = testValues;
+	 testValues.addValue(0, 0, 0);
+	 testValues.addValue(0, 1, 0);
+	 testValues.addValue(0, 2, 0);
+	 testValues.addValue(0, 0, 1);
+	 testValues.addValue(0, 1, 1);
+	 testValues.addValue(0, 2, 1);
+	 testValues.addValue(0, 0, 2);
+	 testValues.addValue(0, 1, 2);
+	 testValues.addValue(0, 2, 2);
+	 assertEquals("Sum returned should be 0.0", 0, DataUtilities.calculateRowTotal(values2D, 1), 0.0000001d);
+	 }
+	//Test case failed due to invalid column index-1 should return 0 for invalid input
+	 @Test
+	 public void test0x0DataAndNegativeRowIndex() {
+	 // set up
+	 DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
+	 values2D = testValues;
+	 testValues.addValue(0, 0, 0);
+	 testValues.addValue(0, 1, 0);
+	 testValues.addValue(0, 2, 0);
+	 testValues.addValue(0, 0, 1);
+	 testValues.addValue(0, 1, 1);
+	 testValues.addValue(0, 2, 1);
+	 testValues.addValue(0, 0, 2);
+	 testValues.addValue(0, 1, 2);
+	 testValues.addValue(0, 2, 2);
+	 try {
+	 assertEquals("Sum returned should be 0", 0, DataUtilities.calculateRowTotal(values2D, -1),
+	 0.0000001d);
+	 } catch (IndexOutOfBoundsException e) {
+	 fail("An unexpected IndexOutOfBoundsException was thrown");
+	 }
+	 }
+	//Test case passed
+	 @Test
+	 public void test0x0DataAndZeroRowIndex() {
+	 // set up
+	 DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
+	 values2D = testValues;
+	 testValues.addValue(0, 0, 0);
+	 testValues.addValue(0, 1, 0);
+	 testValues.addValue(0, 2, 0);
+	 testValues.addValue(0, 0, 1);
+	 testValues.addValue(0, 1, 1);
+	 testValues.addValue(0, 2, 1);
+	 testValues.addValue(0, 0, 2);
+	 testValues.addValue(0, 1, 2);
+	 testValues.addValue(0, 2, 2);
+	 try {
+	 assertEquals("Sum returned should be 0.0", 0.0, DataUtilities.calculateRowTotal(values2D, 0),
+	 0.0000001d);
+	 } catch (IndexOutOfBoundsException e) {
+	 fail("An unexpected IndexOutOfBoundsException was thrown");
+	 }
+	 }
+ 
+	 
 
-//Failed - method should return 6 but is returning 8 
-	@Test
-	public void testValidDataAndZeroRowIndex() {
-		assertEquals("Sum returned should be 6", 6, DataUtilities.calculateRowTotal(values2D, 0), 0.0000001d);
-	}
-
-	// Failed - method should return 6 but is returning 7
-	@Test
-	public void testValidDataAndValidPositiveRowIndex() {
-		assertEquals("Sum returned should be 6.0", 8, DataUtilities.calculateRowTotal(values2D, 1), 0.0000001d);
-	}
-
-	@Test
-	public void test0x0DataAndPositiveRowIndex() {
-		// set up
-		DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
-		values2D = testValues;
-		testValues.addValue(0, 0, 0);
-		testValues.addValue(0, 1, 0);
-		testValues.addValue(0, 2, 0);
-		testValues.addValue(0, 0, 1);
-		testValues.addValue(0, 1, 1);
-		testValues.addValue(0, 2, 1);
-		testValues.addValue(0, 0, 2);
-		testValues.addValue(0, 1, 2);
-		testValues.addValue(0, 2, 2);
-		double a = DataUtilities.calculateColumnTotal(values2D, 1);
-		assertEquals("Sum returned should be 0.0", 0, DataUtilities.calculateColumnTotal(values2D, 1), 0.0000001d);
-	}
-
-//Test case failed due to invalid column index-1 should return 0 for invalid input
-	@Test
-	public void test0x0DataAndNegativeRowIndex() {
-		// set up
-		DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
-		values2D = testValues;
-		testValues.addValue(0, 0, 0);
-		testValues.addValue(0, 1, 0);
-		testValues.addValue(0, 2, 0);
-		testValues.addValue(0, 0, 1);
-		testValues.addValue(0, 1, 1);
-		testValues.addValue(0, 2, 1);
-		testValues.addValue(0, 0, 2);
-		testValues.addValue(0, 1, 2);
-		testValues.addValue(0, 2, 2);
-		try {
-			assertEquals("Sum returned should be 0.0", 0.0, DataUtilities.calculateColumnTotal(values2D, -1),
-					0.0000001d);
-		} catch (IndexOutOfBoundsException e) {
-			fail("An unexpected IndexOutOfBoundsException was thrown");
-		}
-
-	}
-
-//Test case passed
-	@Test
-	public void test0x0DataAndZeroRowIndex() {
-		// set up
-		DefaultKeyedValues2D testValues = new DefaultKeyedValues2D();
-		values2D = testValues;
-		testValues.addValue(0, 0, 0);
-		testValues.addValue(0, 1, 0);
-		testValues.addValue(0, 2, 0);
-		testValues.addValue(0, 0, 1);
-		testValues.addValue(0, 1, 1);
-		testValues.addValue(0, 2, 1);
-		testValues.addValue(0, 0, 2);
-		testValues.addValue(0, 1, 2);
-		testValues.addValue(0, 2, 2);
-		try {
-			assertEquals("Sum returned should be 0.0", 0.0, DataUtilities.calculateRowTotal(values2D, 0),
-					0.0000001d);
-		} catch (IndexOutOfBoundsException e) {
-			fail("An unexpected IndexOutOfBoundsException was thrown");
-		}
-
-	}
 
 	// Test Cases for createNumberArray
 	@Test
