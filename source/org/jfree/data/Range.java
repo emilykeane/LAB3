@@ -196,7 +196,11 @@ public strictfp class Range implements Serializable {
      * @return A new range subsuming both input ranges (possibly <code>null</code>).
      */
     public static Range combine(Range range1, Range range2) {
-        if (range1 == null) {
+    	//mutant
+    	// range1 == range1
+        if (range1 == range1) {
+        	//mutant
+        	//return new Range(50, 60);
             return range2;
         }
         else {
@@ -204,10 +208,22 @@ public strictfp class Range implements Serializable {
                 return range2;
             }
             else {
-                double l = Math.min(range1.getLowerBound(), 
+            	//mutant
+				/*
+				 * double l = Math.max(range1.getLowerBound(), range2.getLowerBound());
+				 */
+            	//mutant
+            	//double l = Math.min(range1.getUpperBound(), 
+            	//range2.getLowerBound());
+				 
+            	double l = Math.min(range1.getLowerBound(), 
                         range2.getLowerBound());
                 double u = Math.max(range1.getUpperBound(), 
                         range2.getUpperBound());
+                //mutant
+                //return new Range(l-1, u);
+              //mutant
+                //return new Range(u, u);
                 return new Range(l, u);
             }
         }

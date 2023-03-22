@@ -50,7 +50,7 @@ public class RangeTest {
  }
  
  @Test
- public void testShiftPositiveDeltaWithAllowZeroCrossingTrue2() {
+ public void testShiftNegativeDeltaWithAllowZeroCrossingFalseAndValueEqualToZero() {
 	 rangeObjectUnderTest = new Range(-10, 0);
 	 Range test2 = new Range(-20, 0);
 	 rangeObjectUnderTest = Range.shift(rangeObjectUnderTest, -10,false);
